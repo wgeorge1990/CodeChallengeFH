@@ -1,2 +1,0 @@
-# CodeChallengeFH
-Code Challenge

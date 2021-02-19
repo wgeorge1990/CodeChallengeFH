@@ -1,0 +1,19 @@
+{
+  "name": "codechallengefh",
+  "version": "1.0.0",
+  "description": "code challenge for Florence Healthcare",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wgeorge1990/CodeChallengeFH.git"
+  },
+  "author": "William George",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wgeorge1990/CodeChallengeFH/issues"
+  },
+  "homepage": "https://github.com/wgeorge1990/CodeChallengeFH#readme"
+}
