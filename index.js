@@ -10,9 +10,9 @@ function filterRangeForPrimes(range) {
 
 function isPrime(num) {
     if (num === 1) return false
-        while(num === 2) return true
-        for (let x = 2; x < num; x++) {
-            if (num % x === 0) return false
+    if (num === 2) return true
+        for (let i = 2; i < num; i++) {
+            if (num % i === 0) return false
         }
         return true;
     }
@@ -23,8 +23,8 @@ const ReadLine = require("readline").createInterface({
     })
 
     const getFreqOfDigits = (primesArray) => primesArray.reduce((acc, currVal) => {
-        return acc.toString().concat(currVal.toString())
-        }).split("").reduce((acc, currVal) => {
+        return acc.toString().concat(currVal.toString()) 
+    }).split("").reduce((acc, currVal) => {
         if (currVal in acc) {
             acc[currVal]++
         } else {
@@ -36,37 +36,28 @@ const ReadLine = require("readline").createInterface({
 function getUserInput() {
     ReadLine.question(`Please enter start and end of range using (example: 1 20) with one space in between: `, (input) => {
 
-        console.warn("Input starts and ends with a number => ( ",
-        input.trim().startsWith(0, typeof Number).toString().endsWith(typeof Number) + " )")
+            const start = parseInt(input.split(" ")[0])
+            const end = parseInt(input.split(" ")[1])
+            const range = createRange(start, end);
+            const primes = filterRangeForPrimes(range);
+            const freqOfDigits = getFreqOfDigits(primes)
+            let freqArr = []
+                
+            for (const property in freqOfDigits) {
+            freqArr.push(freqOfDigits[property])
+            }
+                
+            const highestOccurrence = Math.max(...freqArr)
+                
+            let listOfHighestOccurringDigits = []
+            for (const digit in freqOfDigits) {
+            if (freqOfDigits[digit] === highestOccurrence) {
+                listOfHighestOccurringDigits.push(digit)
+            }}
 
-            let start = parseInt(input.split(" ")[0])
-            let end = parseInt(input.split(" ")[1])
-            let range = createRange(start, end);
-            let primes = filterRangeForPrimes(range);
-            let freqOfDigits = getFreqOfDigits(primes)
-            
-                console.log("Frequency of Prime numbers: ", freqOfDigits)
-                
-                let freqArr = []
-                
-                for (const property in freqOfDigits) {
-                freqArr.push(freqOfDigits[property])
-                }
-                
-                let highestOccurrence = Math.max(...freqArr)
-                console.log("Highest Occurrence: ", highestOccurrence)
-                
-                let listOfHighestOccurringDigits = []
-                for (const digit in freqOfDigits) {
-                if (freqOfDigits[digit] === highestOccurrence) {
-                    listOfHighestOccurringDigits.push(digit)
-                }
-                }
-                console.log("List of Highest Occurring Digits: ", listOfHighestOccurringDigits)
-                
-                const answer = Math.max(...listOfHighestOccurringDigits)
-                console.log("\nAnswer: ", answer)
-            
+            const answer = Math.max(...listOfHighestOccurringDigits)
+            console.log("\nAnswer: ", answer)
+            ReadLine.close
     })
 };
 
