@@ -1,3 +1,5 @@
+const { type } = require("os")
+
 function createRange(start, end) {
     const range = (start, end) => [...Array(end - start + 1)]
         .map((v, i) => start + i)
@@ -33,9 +35,18 @@ const ReadLine = require("readline").createInterface({
         return acc
         }, {})
 
+    function checkInputsValid(input){
+        console.log(typeof input.trim())
+        if (input.trim().length >= 3) return true 
+        console.log("Something was wrong with your input, please try again.")
+        getUserInput()
+    }
+
+
+
 function getUserInput() {
     ReadLine.question(`Please enter start and end of range using (example: 1 20) with one space in between: `, (input) => {
-
+            checkInputsValid(input)
             const start = parseInt(input.split(" ")[0])
             const end = parseInt(input.split(" ")[1])
             const range = createRange(start, end);
