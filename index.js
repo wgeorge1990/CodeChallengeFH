@@ -45,6 +45,7 @@ function getUserInput() {
             const isValid = (trimmedInput.toString().length >= 3 &&
                 trimmedInput.split(" ").length === 2 &&
                 rangePoints.start > 0 &&
+                rangePoints.end[0] != 0 &&
                 rangePoints.end > rangePoints.start &&
                 !(isNaN(rangePoints.end) && !(isNaN(rangePoints.start))))
 
@@ -56,8 +57,7 @@ function getUserInput() {
             return rangePoints
         }
 
-        console.log("rangePoints", formatAndValidateInput(input))
-        let userInputPoints = formatAndValidateInput(input)
+        const userInputPoints = formatAndValidateInput(input)
         const range = createRange(userInputPoints.start, userInputPoints.end);
         const primes = filterRangeForPrimes(range);
         const freqOfDigits = getFreqOfDigits(primes)
@@ -76,12 +76,13 @@ function getUserInput() {
                 listOfHighestOccurringDigits.push(digit)
             }
         }
-
-        const answer = Math.max(...listOfHighestOccurringDigits)
-        console.log("\nAnswer: ", answer)
+        
+        const hightestOccurringDigit = Math.max(...listOfHighestOccurringDigits)
+        console.log("\nThe Highest Occurring Digit from the primes found in provided range is: ", hightestOccurringDigit)
         ReadLine.close
         process.exit()
     })
 };
+
 
 getUserInput()
