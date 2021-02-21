@@ -1,5 +1,3 @@
-const { type } = require("os")
-
 function createRange(start, end) {
     const range = (start, end) => [...Array(end - start + 1)]
         .map((v, i) => start + i)
@@ -19,56 +17,71 @@ function isPrime(num) {
         return true;
     }
 
-const ReadLine = require("readline").createInterface({
+const getFreqOfDigits = (primesArray) => primesArray.reduce((acc, currVal) => {
+    return acc.toString().concat(currVal.toString()) 
+}).split("").reduce((acc, currVal) => {
+    if (currVal in acc) {
+        acc[currVal]++
+    } else {
+        acc[currVal] = 1
+    }
+    return acc
+    }, {})
+
+function getUserInput() {
+
+   
+    const ReadLine = require("readline").createInterface({
         "input": process.stdin,
         "output": process.stdout
     })
-
-    const getFreqOfDigits = (primesArray) => primesArray.reduce((acc, currVal) => {
-        return acc.toString().concat(currVal.toString()) 
-    }).split("").reduce((acc, currVal) => {
-        if (currVal in acc) {
-            acc[currVal]++
-        } else {
-            acc[currVal] = 1
-        }
-        return acc
-        }, {})
-
-    function checkInputsValid(input){
-        console.log(typeof input.trim())
-        if (input.trim().length >= 3) return true 
-        console.log("Something was wrong with your input, please try again.")
-        getUserInput()
-    }
-
-
-
-function getUserInput() {
     ReadLine.question(`Please enter start and end of range using (example: 1 20) with one space in between: `, (input) => {
-            checkInputsValid(input)
-            const start = parseInt(input.split(" ")[0])
-            const end = parseInt(input.split(" ")[1])
-            const range = createRange(start, end);
+            const formatAndValidateInput = (input) => {
+                const trimmedInput = input.trim()
+
+                 const rangePoints = {
+                    start: Number(trimmedInput.split(" ")[0]),
+                    end: Number(trimmedInput.split(" ")[1])
+                }   
+
+                const isValid = (trimmedInput.toString().length >= 3 
+                    && trimmedInput.split(" ").length === 2 
+                    && rangePoints.start > 0
+                    && rangePoints.end > rangePoints.start 
+                    && !(isNaN(rangePoints.end) && !(isNaN(rangePoints.start))))
+
+                if (!isValid) { 
+                    console.log("Input was not valid, Please try again")
+                    process.exit()
+                }
+
+                return rangePoints
+     }
+
+            console.log("rangePoints", formatAndValidateInput(input))
+            let userInputPoints = formatAndValidateInput(input)
+            const range = createRange(userInputPoints.start, userInputPoints.end);
             const primes = filterRangeForPrimes(range);
             const freqOfDigits = getFreqOfDigits(primes)
+            
             let freqArr = []
                 
             for (const property in freqOfDigits) {
             freqArr.push(freqOfDigits[property])
             }
-                
+
             const highestOccurrence = Math.max(...freqArr)
                 
             let listOfHighestOccurringDigits = []
             for (const digit in freqOfDigits) {
-            if (freqOfDigits[digit] === highestOccurrence) {
-                listOfHighestOccurringDigits.push(digit)
+                if (freqOfDigits[digit] === highestOccurrence) {
+                    listOfHighestOccurringDigits.push(digit)
             }}
 
             const answer = Math.max(...listOfHighestOccurringDigits)
             console.log("\nAnswer: ", answer)
             ReadLine.close
+            process.exit()
     })
 };
 
