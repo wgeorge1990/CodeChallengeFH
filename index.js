@@ -94,6 +94,7 @@ async function calculateHighestOccurrence() {
 
     const highestOccurringDigit = Math.max(...listOfHighestOccurringDigits)
     console.log("\nThe Highest Occurring Digit from the primes found in provided range is: ", highestOccurringDigit)
+    console.log("Thanks for checking out my app and have a good day!")
     process.exit()
 }
 
