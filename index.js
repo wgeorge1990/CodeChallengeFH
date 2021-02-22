@@ -1,8 +1,7 @@
-function runProgram() {
-    getUserInput()
-}
-
-runProgram()
+const rl = require("readline").createInterface({
+    "input": process.stdin,
+    "output": process.stdout
+})
 
 function createRange(start, end) {
     const range = (start, end) => [...Array(end - start + 1)]
@@ -58,35 +57,43 @@ const formatAndValidateInput = (input) => {
 }
 
 function getUserInput() {
-    const ReadLine = require("readline").createInterface({
-        "input": process.stdin,
-        "output": process.stdout
-    })
-    ReadLine.question(`Please enter start and end of range using (example: 1 20) with one space in between: `, (input) => {
-
-        const userInputPoints = formatAndValidateInput(input)
-        const range = createRange(userInputPoints.start, userInputPoints.end);
-        const primes = filterRangeForPrimes(range);
-        const freqOfDigits = getFreqOfDigits(primes)
-
-        let freqArr = []
-
-        for (const property in freqOfDigits) {
-            freqArr.push(freqOfDigits[property])
+    return new Promise((resolve, reject) => {
+        try {
+            const answer = rl.question('Please enter start and end of range using (example: 1 20) with one space in between: ', (input) => {
+                resolve(input)
+            });
+        } catch (err) {
+           reject(err)
         }
-
-        const highestOccurrence = Math.max(...freqArr)
-
-        let listOfHighestOccurringDigits = []
-        for (const digit in freqOfDigits) {
-            if (freqOfDigits[digit] === highestOccurrence) {
-                listOfHighestOccurringDigits.push(digit)
-            }
-        }
-
-        const hightestOccurringDigit = Math.max(...listOfHighestOccurringDigits)
-        console.log("\nThe Highest Occurring Digit from the primes found in provided range is: ", hightestOccurringDigit)
-        ReadLine.close()
-        process.exit()
     })
 }
+
+
+async function calculateHighestOccurrence() {
+    const asyncInput = await getUserInput()
+    console.log("asyncInput", asyncInput)
+    const userInputPoints = formatAndValidateInput(asyncInput)
+    const range = createRange(userInputPoints.start, userInputPoints.end);
+    const primes = filterRangeForPrimes(range);
+    const freqOfDigits = getFreqOfDigits(primes)
+
+    let freqArr = []
+
+    for (const property in freqOfDigits) {
+        freqArr.push(freqOfDigits[property])
+    }
+
+    const highestOccurrence = Math.max(...freqArr)
+
+    let listOfHighestOccurringDigits = []
+    for (const digit in freqOfDigits) {
+        if (freqOfDigits[digit] === highestOccurrence) {
+            listOfHighestOccurringDigits.push(digit)
+        }
+    }
+
+    const hightestOccurringDigit = Math.max(...listOfHighestOccurringDigits)
+    console.log("\nThe Highest Occurring Digit from the primes found in provided range is: ", hightestOccurringDigit)
+}
+
+calculateHighestOccurrence().then(result => console.log(result))
